@@ -2,7 +2,7 @@ name: Sync Upstream
 
 on:
   schedule:
-    # Runs every 30 minutes, mimicking your old cron job
+    # Runs every 30 minutes
     - cron: '*/30 * * * *'
   workflow_dispatch: # Allows you to run it manually from the UI
 
