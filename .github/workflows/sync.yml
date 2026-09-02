@@ -1,0 +1,19 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    # Runs every 30 minutes, mimicking your old cron job
+    - cron: '*/30 * * * *'
+  workflow_dispatch: # Allows you to run it manually from the UI
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync Fork
+        uses: actions/checkout@v4
+      - name: Run GitHub CLI sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh repo sync ${{ github.repository }} --source av1-community-contributors/codec-wiki --force
