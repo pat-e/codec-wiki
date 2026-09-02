@@ -4,7 +4,11 @@ on:
   schedule:
     # Runs every 30 minutes
     - cron: '*/30 * * * *'
-  workflow_dispatch: # Allows it to run manually from the UI
+  workflow_dispatch:
+
+# Grant write access to repository contents
+permissions:
+  contents: write
 
 jobs:
   sync:
@@ -12,6 +16,7 @@ jobs:
     steps:
       - name: Sync Fork
         uses: actions/checkout@v4
+
       - name: Run GitHub CLI sync
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
