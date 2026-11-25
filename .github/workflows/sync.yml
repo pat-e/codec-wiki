@@ -14,11 +14,17 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync Fork
-        uses: actions/checkout@v4
-
       - name: Run GitHub CLI sync
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh repo sync ${{ github.repository }} --source av1-community-contributors/codec-wiki --force
+          for attempt in 1 2 3; do
+            if gh repo sync "${{ github.repository }}" --source av1-community-contributors/codec-wiki --force; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "Sync failed (attempt $attempt/3), retrying in 10s..." >&2
+              sleep 10
+            fi
+          done
+          exit 1
